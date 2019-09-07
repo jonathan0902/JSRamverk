@@ -13,6 +13,9 @@
         </div>
       </div>
     </div>
+    <a href="https://github.com/jonathan0902/JSRamverk">
+      <h4>GitHub</h4>
+    </a>
     <markdown-it-vue class="md-body" :content="content"/>
   </div>
 </template>
