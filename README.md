@@ -23,8 +23,11 @@ npm run test
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
+### Dependecies installed
+```
 npm install markdown-it-vue
 npm install raw-loader --save-dev
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
