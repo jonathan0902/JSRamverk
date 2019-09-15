@@ -18,7 +18,9 @@ body {
   font-weight: 300;
   line-height: 1.5;
   color: #2c3e50;
+  text-align: center;
 }
+
 
 /* #nav a.router-link-exact-active {
   color: #42b983;
