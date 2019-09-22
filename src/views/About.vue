@@ -170,7 +170,7 @@ export default class Home extends Vue {
   private token: string = '';
 
   private report() {
-    axios.get('http://localhost:8333/reports/week/' + this.$route.params.id)
+    axios.get('https://me-api.jhellberg.me/reports/week/' + this.$route.params.id)
     .then((response) => {
       this.re = response.data.data;
       this.text = response.data.data;
@@ -183,7 +183,7 @@ export default class Home extends Vue {
   }
 
   private allReports() {
-    axios.get('http://localhost:8333/report/all') 
+    axios.get('https://me-api.jhellberg.me/report/all') 
     .then((response) => {
       console.log(response.data.message);
       this.links = response.data.id;
@@ -195,7 +195,7 @@ export default class Home extends Vue {
   }
 
   private add() {
-    axios.post('http://localhost:8333/report/add', {
+    axios.post('https://me-api.jhellberg.me/report/add', {
       tx: ''
     })
     .then((response) => {
@@ -207,7 +207,7 @@ export default class Home extends Vue {
 
   private edit() {
     console.log(this.text)
-    axios.post('http://localhost:8333/report/update', {
+    axios.post('https://me-api.jhellberg.me/report/update', {
       id: this.$route.params.id,
       tx: this.text
     }, { headers:{'x-access-token': this.token}})
@@ -219,7 +219,7 @@ export default class Home extends Vue {
   }
 
   private register() {
-    axios.post('http://localhost:8333/register', {
+    axios.post('https://me-api.jhellberg.me/register', {
       username: this.username,
       email: this.email,
       birthday: this.currentYear.toString() + '-' + this.currentMonth + '-' + this.currentDay.toString(),
@@ -229,7 +229,7 @@ export default class Home extends Vue {
   }
 
   private login() {
-    axios.post('http://localhost:8333/login', {
+    axios.post('https://me-api.jhellberg.me/login', {
       email: this.email,
       password: this.password
     })

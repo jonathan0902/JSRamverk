@@ -203,7 +203,7 @@ export default class Home extends Vue {
   private password: string = '';
 
   private getAbout() {
-    axios.get('http://localhost:8333')
+    axios.get('https://me-api.jhellberg.me')
     .then((response) => {
       this.about = response.data.data.msg;
     });
@@ -211,7 +211,7 @@ export default class Home extends Vue {
   }
 
   private register() {
-    axios.post('http://localhost:8333/register', {
+    axios.post('https://me-api.jhellberg.me/register', {
       username: this.username,
       email: this.email,
       birthday: this.currentYear.toString() + '-' + this.currentMonth + '-' + this.currentDay.toString(),
@@ -221,7 +221,7 @@ export default class Home extends Vue {
   }
 
   private login() {
-    axios.post('http://localhost:8333/login', {
+    axios.post('https://me-api.jhellberg.me/login', {
       email: this.email,
       password: this.password
     })
