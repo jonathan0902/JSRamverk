@@ -197,7 +197,7 @@ export default class Home extends Vue {
   private add() {
     axios.post('https://me-api.jhellberg.me/report/add', {
       tx: ''
-    })
+    }, { headers:{'x-access-token': this.token}})
     .then((response) => {
       console.log(response.data.message);
       this.allReports();
