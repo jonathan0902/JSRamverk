@@ -208,14 +208,14 @@ export default class Home extends Vue {
   }
 
   private auth() {
-    axios.get('https://me-api.jhellberg.me/report/auth', { headers: { 'x-access-token': this.token } })
+    axios.get('https://me-api.jhellberg.me/reports/auth', { headers: { 'x-access-token': this.token } })
     .then((response) => {
       this.auther = response.data.data;
     });
   }
 
   private allReports() {
-    axios.get('https://me-api.jhellberg.me/report/all')
+    axios.get('https://me-api.jhellberg.me/reports')
     .then((response) => {
       this.links = response.data.id;
     });
@@ -226,7 +226,7 @@ export default class Home extends Vue {
   }
 
   private add() {
-    axios.post('https://me-api.jhellberg.me/report/add', {
+    axios.post('https://me-api.jhellberg.me/reports/add', {
       tx: '',
     }, { headers: { 'x-access-token': this.token } })
     .then((response) => {
@@ -236,7 +236,7 @@ export default class Home extends Vue {
   }
 
   private edit() {
-    axios.post('https://me-api.jhellberg.me/report/update', {
+    axios.post('https://me-api.jhellberg.me/reports/update', {
       id: this.$route.params.id,
       tx: this.text,
     }, { headers: { 'x-access-token': this.token } })

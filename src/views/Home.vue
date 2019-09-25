@@ -236,7 +236,7 @@ export default class Home extends Vue {
   }
 
   private allReports() {
-    axios.get('https://me-api.jhellberg.me/report/all')
+    axios.get('https://me-api.jhellberg.me/reports')
     .then((response) => {
       this.links = response.data.id;
     });
