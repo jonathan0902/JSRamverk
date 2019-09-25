@@ -9,6 +9,9 @@
     "deploy": "npm run build && rsync -av dist/* deploy@165.227.170.175:/var/www/jhellberg.me/html/"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.25",
+    "@fortawesome/free-solid-svg-icons": "^5.11.2",
+    "@fortawesome/vue-fontawesome": "^0.1.7",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "markdown-it-vue": "^1.0.10",

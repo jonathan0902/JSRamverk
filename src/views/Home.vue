@@ -5,12 +5,18 @@
         <div class="navbar">
           <div id="left-nav">
             <router-link class="navText" to="/">Jonathan Hellberg</router-link>
-            <router-link class="navText" to="/reports/week/1">Week 1</router-link>
-            <router-link class="navText" to="/reports/week/2">Week 2</router-link>
+            <div v-for="reca in getAllReports" v-bind:key="reca.id">
+              <router-link class="navText" v-on:click="report" :to="'/reports/week/' + reca.id">Week {{reca.id}}</router-link>
+            </div>
           </div>
           <div id="right-nav">
+            <div v-if="auther">
+              Logged in
+              </div>
+            <div v-else>
             <span class="navText" v-on:click="showLogin"> Login</span>
             <span class="navText" v-on:click="show"> Register</span>
+            </div>
           </div>
         </div>
       </div>
@@ -201,6 +207,9 @@ export default class Home extends Vue {
   private username: string = '';
   private email: string = '';
   private password: string = '';
+  private links: number[] = [];
+  private token: string = '';
+  private auther: boolean = false;
 
   private getAbout() {
     axios.get('https://me-api.jhellberg.me')
@@ -210,12 +219,39 @@ export default class Home extends Vue {
     return this.about;
   }
 
+  private created() {
+    this.allReports();
+    this.auth();
+  }
+
+  private updated() {
+    this.auth();
+  }
+
+  private auth() {
+    axios.get('https://me-api.jhellberg.me/report/auth', { headers: { 'x-access-token': this.token } } )
+    .then((response) => {
+      this.auther = response.data.data;
+    });
+  }
+
+  private allReports() {
+    axios.get('https://me-api.jhellberg.me/report/all')
+    .then((response) => {
+      this.links = response.data.id;
+    });
+  }
+
+  get getAllReports() {
+    return this.links;
+  }
+
   private register() {
     axios.post('https://me-api.jhellberg.me/register', {
       username: this.username,
       email: this.email,
       birthday: this.currentYear.toString() + '-' + this.currentMonth + '-' + this.currentDay.toString(),
-      password: this.password
+      password: this.password,
     });
     this.hide();
   }
@@ -223,10 +259,11 @@ export default class Home extends Vue {
   private login() {
     axios.post('https://me-api.jhellberg.me/login', {
       email: this.email,
-      password: this.password
+      password: this.password,
     })
     .then((response) => {
-      console.log(response.data.message);
+      this.token = response.data.token;
+      this.auther = true;
     });
     this.hideLogin();
   }

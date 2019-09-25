@@ -6,25 +6,39 @@
           <div id="left-nav">
             <router-link class="navText" to="/">Jonathan Hellberg</router-link>
             <div v-for="reca in getAllReports" v-bind:key="reca.id">
-              <router-link class="navText" :to="'/reports/week/' + reca.id">Week {{reca.id}}</router-link>
+              <router-link class="navText" v-on:click="report" :to="'/reports/week/' + reca.id">Week {{reca.id}}</router-link>
             </div>
           </div>
           <div id="right-nav">
+            <div v-if="auther">
+              Logged in
+              </div>
+            <div v-else>
             <span class="navText" v-on:click="showLogin"> Login</span>
             <span class="navText" v-on:click="show"> Register</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="container-block">
       <div class="">
-        <button v-on:click="showEdit">Edit</button>
-        <button v-on:click="add">Crate new Week</button>
-      </div>
-      <div class="">
-        {{ this.report() }}
+       <markdown-it-vue class="md-body" :key="this.re" :content="this.re" />
       </div>
     </div>
+    <div v-if="auther">
+      <a class="float" id="menu-share">
+      <font-awesome-icon class="my-float" icon="cog" />
+      </a>
+      <ul>
+      <li><a v-on:click="add">
+      <font-awesome-icon class="my-float" icon="plus" />
+      </a></li>
+      <li><a v-on:click="showEdit">
+      <font-awesome-icon class="my-float" icon="edit" />
+      </a></li>
+      </ul>
+      </div>
   <modal name="hello-world" :height="600">
     <div class="reg-block">
       <h2>Register</h2>
@@ -133,6 +147,8 @@ import { ValidationProvider, extend } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
 import {mapActions} from 'vuex';
 import axios from 'axios';
+import MarkdownItVue from 'markdown-it-vue';
+import 'markdown-it-vue/dist/markdown-it-vue.css';
 
 extend('required', {
   ...required,
@@ -151,6 +167,7 @@ interface Date {
 @Component({
   components: {
     ValidationProvider,
+    MarkdownItVue,
   },
 })
 export default class Home extends Vue {
@@ -168,6 +185,7 @@ export default class Home extends Vue {
   private text: string = '';
   private links: number[] = [];
   private token: string = '';
+  private auther: boolean = false;
 
   private report() {
     axios.get('https://me-api.jhellberg.me/reports/week/' + this.$route.params.id)
@@ -178,14 +196,27 @@ export default class Home extends Vue {
     return this.re;
   }
 
-  created() {
+  private created() {
     this.allReports();
+    this.report();
+    this.auth();
+  }
+
+  private updated() {
+    this.report();
+    this.auth();
+  }
+
+  private auth() {
+    axios.get('https://me-api.jhellberg.me/report/auth', { headers: { 'x-access-token': this.token } })
+    .then((response) => {
+      this.auther = response.data.data;
+    });
   }
 
   private allReports() {
-    axios.get('https://me-api.jhellberg.me/report/all') 
+    axios.get('https://me-api.jhellberg.me/report/all')
     .then((response) => {
-      console.log(response.data.message);
       this.links = response.data.id;
     });
   }
@@ -196,25 +227,22 @@ export default class Home extends Vue {
 
   private add() {
     axios.post('https://me-api.jhellberg.me/report/add', {
-      tx: ''
-    }, { headers:{'x-access-token': this.token}})
+      tx: '',
+    }, { headers: { 'x-access-token': this.token } })
     .then((response) => {
-      console.log(response.data.message);
       this.allReports();
     });
     this.allReports();
   }
 
   private edit() {
-    console.log(this.text)
     axios.post('https://me-api.jhellberg.me/report/update', {
       id: this.$route.params.id,
-      tx: this.text
-    }, { headers:{'x-access-token': this.token}})
+      tx: this.text,
+    }, { headers: { 'x-access-token': this.token } })
     .then((response) => {
-      console.log(response);
+      this.re = this.text;
     });
-    this.report()
     this.hideEdit();
   }
 
@@ -223,7 +251,7 @@ export default class Home extends Vue {
       username: this.username,
       email: this.email,
       birthday: this.currentYear.toString() + '-' + this.currentMonth + '-' + this.currentDay.toString(),
-      password: this.password
+      password: this.password,
     });
     this.hide();
   }
@@ -231,11 +259,11 @@ export default class Home extends Vue {
   private login() {
     axios.post('https://me-api.jhellberg.me/login', {
       email: this.email,
-      password: this.password
+      password: this.password,
     })
     .then((response) => {
-      console.log(response.data.message)
       this.token = response.data.token;
+      this.auther = true;
     });
     this.hideLogin();
   }
@@ -344,6 +372,117 @@ export default class Home extends Vue {
 .reg-block h2 {
   padding: 0;
   margin: 0;
+}
+
+.label-container{
+	position:fixed;
+	bottom:48px;
+	right:105px;
+	display:table;
+	visibility: hidden;
+}
+
+.label-text{
+	color:#FFF;
+	background:rgba(51,51,51,0.5);
+	display:table-cell;
+	vertical-align:middle;
+	padding:10px;
+	border-radius:3px;
+}
+
+.label-arrow{
+	display:table-cell;
+	vertical-align:middle;
+	color:#333;
+	opacity:0.5;
+}
+
+.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:40px;
+	right:40px;
+	background-color:#F33;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+	z-index:1000;
+	animation: bot-to-top 2s ease-out;
+}
+
+ul{
+	position:fixed;
+	right:40px;
+	padding-bottom:20px;
+	bottom:80px;
+	z-index:100;
+}
+
+ul li{
+	list-style:none;
+	margin-bottom:10px;
+}
+
+ul li a{
+	background-color:#F33;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+	width:60px;
+	height:60px;
+	display:block;
+}
+
+ul:hover{
+	visibility:visible!important;
+	opacity:1!important;
+}
+
+
+.my-float{
+	font-size:24px;
+	margin-top:18px;
+}
+
+a#menu-share + ul{
+  visibility: hidden;
+}
+
+a#menu-share:hover + ul{
+  visibility: visible;
+  animation: scale-in 0.5s;
+}
+
+a#menu-share i{
+	animation: rotate-in 0.5s;
+}
+
+a#menu-share:hover > i{
+	animation: rotate-out 0.5s;
+}
+
+@keyframes bot-to-top {
+    0%   {bottom:-40px}
+    50%  {bottom:40px}
+}
+
+@keyframes scale-in {
+    from {transform: scale(0);opacity: 0;}
+    to {transform: scale(1);opacity: 1;}
+}
+
+@keyframes rotate-in {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+@keyframes rotate-out {
+    from {transform: rotate(360deg);}
+    to {transform: rotate(0deg);}
 }
 
 .img {
