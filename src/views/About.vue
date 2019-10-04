@@ -23,7 +23,7 @@
     </div>
     <div class="container-block">
       <div class="">
-       <markdown-it-vue class="md-body" :key="this.re" :content="this.re" />
+       <markdown-it-vue id="code" class="md-body" :key="this.re" :content="this.re" />
       </div>
     </div>
     <div v-if="auther">

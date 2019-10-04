@@ -6,7 +6,7 @@
           <div id="left-nav">
             <router-link class="navText" to="/">Jonathan Hellberg</router-link>
             <div v-for="reca in getAllReports" v-bind:key="reca.id">
-              <router-link class="navText" v-on:click="report" :to="'/reports/week/' + reca.id">Week {{reca.id}}</router-link>
+              <router-link class="navText" :id="'link' + reca.id" v-on:click="report" :to="'/reports/week/' + reca.id">Week {{reca.id}}</router-link>
             </div>
           </div>
           <div id="right-nav">
@@ -14,7 +14,7 @@
               Logged in
               </div>
             <div v-else>
-            <span class="navText" v-on:click="showLogin"> Login</span>
+            <span id="login" class="navText" v-on:click="showLogin"> Login</span>
             <span class="navText" v-on:click="show"> Register</span>
             </div>
           </div>
@@ -51,7 +51,7 @@
     <div class="block"></div>
     <div class="text-block">
         <div id="contain">
-          <h3>About me</h3>
+          <h3 id="aboutts">About me</h3>
           <p class="text-about"> {{ this.getAbout() }} </p>
       </div>
     </div>

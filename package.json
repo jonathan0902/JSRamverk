@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "npm run build && rsync -av dist/* deploy@165.227.170.175:/var/www/jhellberg.me/html/"
+    "deploy": "npm run build && rsync -av dist/* deploy@165.227.170.175:/var/www/jhellberg.me/html/",
+    "test": "mocha"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
@@ -27,6 +28,7 @@
     "@vue/cli-plugin-babel": "^3.11.0",
     "@vue/cli-plugin-typescript": "^3.11.0",
     "@vue/cli-service": "^3.11.0",
+    "mocha": "^6.2.1",
     "raw-loader": "^3.1.0",
     "sass": "^1.17.4",
     "sass-loader": "^7.1.0",
