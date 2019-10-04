@@ -7,14 +7,18 @@ node_js:
 
 sudo: false
 
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+
 git:
     submodules: false
 
 before_script:
     - npm install
-    - wget http://chromedriver.storage.googleapis.com/2.24/chromedriver_linux64.zip
-    - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/
-    - export CHROME_BIN=chromium-browser
 
 script:
     - npm run test
