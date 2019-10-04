@@ -11,3 +11,4 @@ build:
             -
                 #command: 'istanbul cover --report clover test.js'
                 command: 'npm run test'
+            - js-scrutinizer-run    
