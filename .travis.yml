@@ -1,18 +1,13 @@
+
 language: node_js
 
 node_js:
     - "node"
+    - "10"
     - "8"
-    - "7"
+    - "6"
 
 sudo: false
-
-addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
 
 git:
     submodules: false
@@ -21,4 +16,8 @@ before_script:
     - npm install
 
 script:
-    - npm run test
+    - npm test
+
+after_success:
+    - npm run report-coveralls
+    - npm run report-codecov

@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jonathan0902/JSRamverk/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jonathan0902/JSRamverk/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/jonathan0902/JSRamverk/badges/build.png?b=master)](https://scrutinizer-ci.com/g/jonathan0902/JSRamverk/build-status/master)
 ## Project setup
 ```
 npm install
